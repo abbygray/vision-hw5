@@ -23,8 +23,8 @@ def train(net, dataloader, optimizer, criterion, epoch, device):
         optimizer.zero_grad()
 
         # forward + backward + optimize
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
+        outputs = net(inputs).to(device)
+        loss = criterion(outputs, labels).to(device)
         loss.backward()
         optimizer.step()
 
@@ -84,12 +84,12 @@ def main():
     cifarLoader = CifarLoader(args)
     if not os.path.exists(args.logdir):
         os.makedirs(args.logdir)
-    device = torch.device("cuda" if args.cuda else "cpu")
+    device = torch.device("cuda:0" if args.cuda else "cpu")
     net = args.model(args.logdir, device).to(device)
     print('The log is recorded in ')
     print(net.logFile.name)
 
-    criterion = net.criterion().to(device)
+    criterion = net.criterion()
     optimizer = net.optimizer()
 
     for epoch in trange(args.epochs):  # loop over the dataset multiple times
