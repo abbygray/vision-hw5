@@ -93,10 +93,10 @@ def main():
 
     for epoch in trange(args.epochs):  # loop over the dataset multiple times
         net.adjust_learning_rate(optimizer, epoch, args)
-        train(net, cifarLoader, optimizer, criterion, epoch)
+        train(net, cifarLoader, optimizer, criterion, epoch, device)
         if epoch % 1 == 0: # Comment out this part if you want a faster training
-            test(net, cifarLoader, 'Train')
-            test(net, cifarLoader, 'Test')
+            test(net, cifarLoader, device, 'Train')
+            test(net, cifarLoader, device, 'Test')
 
 
     print('The log is recorded in ')
