@@ -85,11 +85,11 @@ def main():
     if not os.path.exists(args.logdir):
         os.makedirs(args.logdir)
     device = torch.device("cuda" if args.cuda else "cpu")
-    net = args.model(args.logdir, device)
+    net = args.model(args.logdir, device).to(device)
     print('The log is recorded in ')
     print(net.logFile.name)
 
-    criterion = net.criterion()
+    criterion = net.criterion().to(device)
     optimizer = net.optimizer()
 
     for epoch in trange(args.epochs):  # loop over the dataset multiple times
