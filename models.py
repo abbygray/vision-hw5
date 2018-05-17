@@ -10,8 +10,9 @@ import torchvision.models as torchmodels
 class BaseModel(nn.Module):
     def __init__(self):
         super(BaseModel, self).__init__()
-        if not os.path.exists('logs'):
-            os.makedirs('logs')
+        dir_name = os.path.join(log_dir, 'logs/')
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S_log.txt')
         self.logFile = open('logs/' + st, 'w')
@@ -35,10 +36,11 @@ class BaseModel(nn.Module):
 
 
 class LazyNet(BaseModel):
-    def __init__(self):
-        super(LazyNet, self).__init__()
+    def __init__(self, log_dir, device):
+        super(LazyNet, self).__init__(log_dir)
         # TODO: Define model here
-        self.lin1 = nn.Linear(32 * 32 * 3, 10)
+        self.device = device
+        self.lin1 = nn.Linear(32 * 32 * 3, 10).to(device)
     
 
     def forward(self, x):
@@ -57,12 +59,13 @@ class LazyNet(BaseModel):
         
 
 class BoringNet(BaseModel):
-    def __init__(self):
-        super(BoringNet, self).__init__()
+    def __init__(self, log_dir, device):
+        super(BoringNet, self).__init__(log_dir)
         # TODO: Define model here
-        self.lin1 = nn.Linear(3 * 32 * 32, 120)
-        self.lin2 = nn.Linear(120, 84)
-        self.lin3 = nn.Linear(84, 10)
+        self.device = device
+        self.lin1 = nn.Linear(3 * 32 * 32, 120).to(device)
+        self.lin2 = nn.Linear(120, 84).to(device)
+        self.lin3 = nn.Linear(84, 10).to(device)
 
     def forward(self, x):
         # TODO: Implement forward pass for BoringNet
@@ -84,14 +87,14 @@ class BoringNet(BaseModel):
 
 class CoolNet(BaseModel):
     def __init__(self):
-        super(CoolNet, self).__init__()
+        super(CoolNet, self).__init__(log_dir)
         # TODO: Define model here
-        self.conv1 = nn.Conv2d(3, 6, 8)
-        self.conv2 = nn.Conv2d(6, 32, 8)
+        self.device = device
+        self.conv1 = nn.Conv2d(3, 6, 8).to(device)
+        self.conv2 = nn.Conv2d(6, 32, 8).to(device)
         # an affine operation: y = Wx + b
-        self.lin1 = nn.Linear(128, 120)
-        self.lin2 = nn.Linear(120, 84)
-        self.lin3 = nn.Linear(84, 10)
+        self.lin1 = nn.Linear(128, 120).to(device)
+        self.lin2 = nn.Linear(120, 10).to(device)
 
 
     def forward(self, x):

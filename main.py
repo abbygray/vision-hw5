@@ -8,7 +8,7 @@ import torch
 import pdb
 
 
-def train(net, dataloader, optimizer, criterion, epoch):
+def train(net, dataloader, optimizer, criterion, epoch, device):
 
     running_loss = 0.0
     total_loss = 0.0
@@ -16,6 +16,7 @@ def train(net, dataloader, optimizer, criterion, epoch):
     for i, data in enumerate(tqdm(dataloader.trainloader, 0)):
         # get the inputs
         inputs, labels = data
+        inputs, labels = inputs.to(device), labels.to(device)
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -38,7 +39,7 @@ def train(net, dataloader, optimizer, criterion, epoch):
           (total_loss / i))
 
 
-def test(net, dataloader, tag=''):
+def test(net, dataloader, device, tag=''):
     correct = 0
     total = 0
     if tag == 'Train':
@@ -48,6 +49,7 @@ def test(net, dataloader, tag=''):
     with torch.no_grad():
         for data in dataTestLoader:
             images, labels = data
+            images, labels = images.to(device), labels.to(device)
             outputs = net(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
@@ -79,7 +81,10 @@ def main():
     args = argParser()
 
     cifarLoader = CifarLoader(args)
-    net = args.model()
+    if not os.path.exists(args.logdir):
+        os.makedirs(args.logdir)
+    device = torch.device("cuda" if args.cuda else "cpu")
+    net = args.model(args.logdir, device)
     print('The log is recorded in ')
     print(net.logFile.name)
 
