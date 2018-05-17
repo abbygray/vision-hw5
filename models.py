@@ -90,10 +90,10 @@ class CoolNet(BaseModel):
         super(CoolNet, self).__init__(log_dir)
         # TODO: Define model here
         self.device = device
-        self.conv1 = nn.Conv2d(3, 6, 8).to(device)
-        self.conv2 = nn.Conv2d(6, 32, 8).to(device)
+        self.conv1 = nn.Conv2d(3, 16, 8).to(device)
+        self.conv2 = nn.Conv2d(16, 64, 8).to(device)
         # an affine operation: y = Wx + b
-        self.lin1 = nn.Linear(128, 120).to(device)
+        self.lin1 = nn.Linear(256, 120).to(device)
         self.lin2 = nn.Linear(120, 10).to(device)
 
 
@@ -105,8 +105,8 @@ class CoolNet(BaseModel):
         x = F.max_pool2d(F.relu(self.conv2(x)), 2)
         x = x.view(-1, self.num_flat_features(x))
         x = F.relu(self.lin1(x))
-        x = F.relu(self.lin2(x))
-        x = self.lin3(x)
+        x = self.lin2(x)
+      
         return x
 
     def num_flat_features(self, x):
