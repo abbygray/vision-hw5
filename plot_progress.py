@@ -6,6 +6,8 @@ import argparse
 def argParser():
 	parser = argparse.ArgumentParser(description='PyTorch Plot Progress')
 	parser.add_argument('--file_name', default='')
+	parser.add_argument('--out1', default='plot1.png')
+	parser.add_argument('--out2', default='plot2.png')
 	return parser.parse_args()
 
 
@@ -26,9 +28,10 @@ def main():
 	
 	plt.plot(train_accuracy)
 	plt.plot(test_accuracy)
-	plt.show()
+	plt.savefig(args.out1)
+	plt.clf()
 	plt.plot(train_loss)
-	plt.show()
+	plt.savefig(args.out2)
 
 
 

@@ -1,5 +1,6 @@
 from utils import argParser
 from dataloader import CifarLoader
+from tqdm import tqdm, trange
 import matplotlib.pyplot as plt
 import numpy as np
 import models
@@ -12,7 +13,7 @@ def train(net, dataloader, optimizer, criterion, epoch):
     running_loss = 0.0
     total_loss = 0.0
 
-    for i, data in enumerate(dataloader.trainloader, 0):
+    for i, data in enumerate(tqdm(dataloader.trainloader, 0)):
         # get the inputs
         inputs, labels = data
 
@@ -85,7 +86,7 @@ def main():
     criterion = net.criterion()
     optimizer = net.optimizer()
 
-    for epoch in range(args.epochs):  # loop over the dataset multiple times
+    for epoch in trange(args.epochs):  # loop over the dataset multiple times
         net.adjust_learning_rate(optimizer, epoch, args)
         train(net, cifarLoader, optimizer, criterion, epoch)
         if epoch % 1 == 0: # Comment out this part if you want a faster training
