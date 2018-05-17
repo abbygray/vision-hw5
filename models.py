@@ -8,7 +8,7 @@ import time
 import torchvision.models as torchmodels
 
 class BaseModel(nn.Module):
-    def __init__(self):
+    def __init__(self, log_dir):
         super(BaseModel, self).__init__()
         dir_name = os.path.join(log_dir, 'logs/')
         if not os.path.exists(dir_name):
@@ -86,7 +86,7 @@ class BoringNet(BaseModel):
 
 
 class CoolNet(BaseModel):
-    def __init__(self):
+    def __init__(self, log_dir, device):
         super(CoolNet, self).__init__(log_dir)
         # TODO: Define model here
         self.device = device
