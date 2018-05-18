@@ -15,7 +15,7 @@ class BaseModel(nn.Module):
             os.makedirs(dir_name)
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S_log.txt')
-        self.logFile = open('logs/' + st, 'w')
+        self.logFile = open(str(dir_name) + st, 'w')
 
     def log(self, str):
      #   print(str)
