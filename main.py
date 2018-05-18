@@ -8,6 +8,14 @@ import torch
 import pdb
 import os
 
+def label2matrix(labels):
+    result = []
+    for label in labels:
+        row = np.zeros(10)
+        row[label] = 1.0
+        result.append(row)
+    
+    return torch.FloatTensor(result)
 
 def train(net, dataloader, optimizer, criterion, epoch, device):
 
@@ -16,7 +24,8 @@ def train(net, dataloader, optimizer, criterion, epoch, device):
 
     for i, data in enumerate(tqdm(dataloader.trainloader, 0)):
         # get the inputs
-        inputs, labels = data
+        inputs, l = data
+        labels = label2matrix(l)
         inputs, labels = inputs.to(device), labels.to(device)
 
         # zero the parameter gradients

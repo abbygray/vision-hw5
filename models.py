@@ -22,7 +22,8 @@ class BaseModel(nn.Module):
         self.logFile.write(str + '\n')
 
     def criterion(self):
-        return nn.CrossEntropyLoss()
+       # return nn.CrossEntropyLoss()
+       return nn.MSELoss()
 
     def optimizer(self):
         return optim.SGD(self.parameters(), lr=0.001)
