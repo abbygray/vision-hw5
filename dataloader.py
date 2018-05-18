@@ -13,6 +13,7 @@ class CifarLoader(object):
 			 transforms.HorizontalFlip(),
 			 transforms.ColorJitter(),
 			 transforms.RandomAffine(90),
+			 transforms.CenterCrop(24),
 		     transforms.ToTensor(),
 		     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 		     ])
