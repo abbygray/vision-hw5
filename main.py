@@ -30,10 +30,10 @@ def train(net, dataloader, optimizer, criterion, epoch, device):
 
         # print statistics
         running_loss += loss.item()
+        total_loss += loss.item()
         if (i + 1) % 2000 == 0:    # print every 2000 mini-batches
             net.log('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))
-            total_loss += running_loss
             running_loss = 0.0
 
     net.log('Final Summary:   loss: %.3f' %
@@ -68,7 +68,7 @@ def test(net, dataloader, device, tag=''):
             outputs = net(images)
             _, predicted = torch.max(outputs, 1)
             c = (predicted == labels).squeeze()
-            for i in range(4):
+            for i in range(len(labels)):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
